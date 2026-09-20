@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate the four supported robot forms from the exported full URDF."""
+"""Generate the six display robot forms from the exported full URDF."""
 
 from copy import deepcopy
 from pathlib import Path
@@ -11,7 +11,7 @@ import numpy as np
 
 
 URDF_DIR = Path(__file__).resolve().parents[1] / "urdf"
-SOURCE = URDF_DIR / "standard.urdf"
+SOURCE = URDF_DIR / "std_auto.urdf"
 MESH_DIR = URDF_DIR.parent / "meshes"
 
 
@@ -31,7 +31,7 @@ def mesh_link(link_name, mesh_name):
         ET.SubElement(
             geometry,
             "mesh",
-            {"filename": f"package://standard/meshes/{mesh_name}"},
+            {"filename": f"package://bw_std_description/meshes/{mesh_name}"},
         )
         if element_name == "visual":
             material = ET.SubElement(element, "material", {"name": ""})
@@ -55,7 +55,7 @@ def add_v2_chest_cap(robot):
         ET.SubElement(
             geometry,
             "mesh",
-            {"filename": "package://standard/meshes/chest_top_cap.STL"},
+            {"filename": "package://bw_std_description/meshes/chest_top_cap.STL"},
         )
         if element_name == "visual":
             material = ET.SubElement(element, "material", {"name": ""})
@@ -106,10 +106,10 @@ def write_variant(
         slider_parent = "base_link" if "base_link" in included_links else "base_footprint"
         robot.append(fixed_joint("linear_slide_joint", slider_parent, "linear_slide_link"))
 
-    if filename == "standard_v2.urdf":
+    if filename == "std_v2.urdf":
         add_v2_chest_cap(robot)
 
-    variant = Path(filename).stem.removeprefix("standard_")
+    variant = Path(filename).stem.removeprefix("std_")
     namespace_robot_meshes(robot, variant)
 
     ET.indent(robot, space="  ")
@@ -123,7 +123,7 @@ def namespace_robot_meshes(robot, variant):
     """Give every variant private mesh paths so equal filenames cannot collide."""
     target_dir = MESH_DIR / variant
     target_dir.mkdir(parents=True, exist_ok=True)
-    prefix = "package://standard/meshes/"
+    prefix = "package://bw_std_description/meshes/"
     for mesh in robot.findall(".//mesh"):
         uri = mesh.attrib["filename"]
         if not uri.startswith(prefix):
@@ -138,15 +138,15 @@ def namespace_robot_meshes(robot, variant):
 
 def write_v4_subset(filename, included_links, reparent_arm=False):
     """Create arm-only and chassis-only forms from the imported v4 model."""
-    source_root = ET.parse(URDF_DIR / "standard_v4.urdf").getroot()
+    source_root = ET.parse(URDF_DIR / "std_v4.urdf").getroot()
     robot = ET.Element("robot", {"name": Path(filename).stem})
     for element in source_root:
         if element.tag == "link" and name(element) in included_links:
             link = deepcopy(element)
-            if filename == "standard_v6.urdf" and name(link) == "base_link":
+            if filename == "std_v6.urdf" and name(link) == "base_link":
                 for mesh in link.findall(".//mesh"):
                     mesh.attrib["filename"] = (
-                        "package://standard/meshes/v4_base_flat_top.STL"
+                        "package://bw_std_description/meshes/v4_base_flat_top.STL"
                     )
             robot.append(link)
         elif element.tag == "joint":
@@ -158,12 +158,12 @@ def write_v4_subset(filename, included_links, reparent_arm=False):
                 joint.find("parent").attrib["link"] = "base_footprint"
                 robot.append(joint)
 
-    if filename == "standard_v5.urdf":
+    if filename == "std_v5.urdf":
         robot.append(mesh_link("arm_base_plate_link", "v5_solid_base.STL"))
         robot.append(
             fixed_joint("arm_base_plate_joint", "base_footprint", "arm_base_plate_link")
         )
-    variant = Path(filename).stem.removeprefix("standard_")
+    variant = Path(filename).stem.removeprefix("std_")
     namespace_robot_meshes(robot, variant)
     ET.indent(robot, space="  ")
     output = URDF_DIR / filename
@@ -173,11 +173,11 @@ def write_v4_subset(filename, included_links, reparent_arm=False):
 
 
 def write_v4_subsets():
-    source_root = ET.parse(URDF_DIR / "standard_v4.urdf").getroot()
+    source_root = ET.parse(URDF_DIR / "std_v4.urdf").getroot()
     all_links = {name(link) for link in source_root.findall("link")}
     arm_links = {link for link in all_links if link.startswith("A_right_")}
     write_v4_subset(
-        "standard_v5.urdf",
+        "std_v5.urdf",
         {"base_footprint"} | arm_links,
         reparent_arm=True,
     )
@@ -188,7 +188,7 @@ def write_v4_subsets():
         "D_right_link",
         "D_behind_link",
     }
-    write_v4_subset("standard_v6.urdf", chassis_links)
+    write_v4_subset("std_v6.urdf", chassis_links)
 
 
 def split_base_mesh():
@@ -508,16 +508,16 @@ def main():
     chest = {"C_Link"}
     arms = {link for link in all_links if link.startswith("A_")}
 
-    write_variant("standard_v1.urdf", all_links)
+    write_variant("std_v1.urdf", all_links)
     write_variant(
-        "standard_v2.urdf",
+        "std_v2.urdf",
         {"base_footprint"} | chest | arms,
         reparent_c_joint=True,
         show_slider=True,
         slider_mesh="linear_slide_v2.STL",
     )
     write_v4_subsets()
-    v2_root = ET.parse(URDF_DIR / "standard_v2.urdf").getroot()
+    v2_root = ET.parse(URDF_DIR / "std_v2.urdf").getroot()
     forbidden_v2_links = {
         "base_link",
         "D_left_Link",

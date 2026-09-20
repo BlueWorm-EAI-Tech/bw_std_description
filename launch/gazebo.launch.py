@@ -14,29 +14,36 @@ from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
 
 
-VALID_VARIANTS = ("v1", "v2", "v3", "v4", "v5", "v6")
+SUPPORTED_ROBOT_MODELS = (
+    "std_auto",
+    "std_v1",
+    "std_v2",
+    "std_v3",
+    "std_v4",
+    "std_v5",
+    "std_v6",
+)
 
 
 def launch_robot(context, package_share):
-    variant = LaunchConfiguration("variant").perform(context).lower()
+    robot_model = LaunchConfiguration("robot_model").perform(context).lower()
     model_override = LaunchConfiguration("model").perform(context)
 
-    if variant not in VALID_VARIANTS:
+    if robot_model not in SUPPORTED_ROBOT_MODELS:
         raise ValueError(
-            f"Unsupported robot variant '{variant}'. Choose one of: "
-            + ", ".join(VALID_VARIANTS)
+            f"Unsupported robot model '{robot_model}'. Choose one of: "
+            + ", ".join(SUPPORTED_ROBOT_MODELS)
         )
 
-    model = Path(model_override or package_share / "urdf" / f"standard_{variant}.urdf")
+    model = Path(model_override or package_share / "urdf" / f"{robot_model}.urdf")
     robot = ET.parse(model).getroot()
-    package_prefix = "package://standard/"
+    package_prefix = "package://bw_std_description/"
     for mesh in robot.findall(".//mesh"):
         uri = mesh.attrib.get("filename", "")
         if uri.startswith(package_prefix):
             resource = package_share / uri.removeprefix(package_prefix)
             mesh.attrib["filename"] = resource.resolve().as_uri()
 
-    # spawn_entity parses a Unicode string, so omit the XML encoding declaration.
     robot_description = ET.tostring(robot, encoding="unicode")
 
     return [
@@ -53,7 +60,7 @@ def launch_robot(context, package_share):
         Node(
             package="gazebo_ros",
             executable="spawn_entity.py",
-            name="spawn_standard",
+            name="spawn_std_robot",
             output="screen",
             arguments=[
                 "-entity",
@@ -74,31 +81,30 @@ def launch_robot(context, package_share):
 
 
 def generate_launch_description():
-    package_share = Path(get_package_share_directory("standard"))
+    package_share = Path(get_package_share_directory("bw_std_description"))
     gazebo_share = Path(get_package_share_directory("gazebo_ros"))
 
     return LaunchDescription(
         [
-            # Gazebo Classic otherwise blocks its GUI while refreshing the
-            # online model database when the service is unavailable.
             SetEnvironmentVariable("GAZEBO_MODEL_DATABASE_URI", ""),
             DeclareLaunchArgument(
-                "variant",
-                default_value="v1",
-                choices=list(VALID_VARIANTS),
+                "robot_model",
+                default_value="std_v1",
+                choices=list(SUPPORTED_ROBOT_MODELS),
                 description=(
-                    "Robot form: v1 (full), v2 (dual arm), v3 (patrol), "
-                    "v4 (engineering), v5 (single arm), v6 (chassis)"
+                    "Model: std_v1 (full), std_v2 (dual arm), std_v3 (patrol), "
+                    "std_v4 (engineering), std_v5 (single arm), std_v6 "
+                    "(chassis), or std_auto (runtime full-body contract)"
                 ),
             ),
             DeclareLaunchArgument(
                 "model",
                 default_value="",
-                description="Optional absolute URDF path overriding the selected variant",
+                description="Optional absolute URDF path overriding robot_model",
             ),
             DeclareLaunchArgument(
                 "entity_name",
-                default_value="standard",
+                default_value="std_robot",
                 description="Gazebo entity name",
             ),
             DeclareLaunchArgument(

@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
-  <name>standard</name>
+  <name>bw_std_description</name>
   <version>1.0.0</version>
   <description>URDF description and RViz display launch files for the Standard robot.</description>
 
-  <maintainer email="maintainer@example.com">maintainer</maintainer>
+  <maintainer email="menlinyan@gmail.com">menlin</maintainer>
   <license>BSD-3-Clause</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>

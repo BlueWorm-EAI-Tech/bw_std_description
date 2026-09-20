@@ -3,7 +3,7 @@
      Commit Version: 1.6.0-4-g7f85cfe  Build Version: 1.6.7995.38578
      For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
 <robot
-  name="standard_patrol">
+  name="std_v3">
   <!-- Joint origins below include the captured display pose as the zero pose. -->
   <link
     name="base_footprint" />
@@ -40,7 +40,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://standard/meshes/v3/base_link.STL" />
+          filename="package://bw_std_description/meshes/v3/base_link.STL" />
       </geometry>
       <material
         name="">
@@ -54,7 +54,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://standard/meshes/v3/base_link.STL" />
+          filename="package://bw_std_description/meshes/v3/base_link.STL" />
       </geometry>
     </collision>
   </link>
@@ -80,7 +80,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://standard/meshes/v3/D_right_Link.STL" />
+          filename="package://bw_std_description/meshes/v3/D_right_Link.STL" />
       </geometry>
       <material
         name="">
@@ -94,7 +94,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://standard/meshes/v3/D_right_Link.STL" />
+          filename="package://bw_std_description/meshes/v3/D_right_Link.STL" />
       </geometry>
     </collision>
   </link>
@@ -133,7 +133,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://standard/meshes/v3/D_left_Link.STL" />
+          filename="package://bw_std_description/meshes/v3/D_left_Link.STL" />
       </geometry>
       <material
         name="">
@@ -147,7 +147,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://standard/meshes/v3/D_left_Link.STL" />
+          filename="package://bw_std_description/meshes/v3/D_left_Link.STL" />
       </geometry>
     </collision>
   </link>
@@ -186,7 +186,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://standard/meshes/v3/D_behind_Link.STL" />
+          filename="package://bw_std_description/meshes/v3/D_behind_Link.STL" />
       </geometry>
       <material
         name="">
@@ -200,7 +200,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://standard/meshes/v3/D_behind_Link.STL" />
+          filename="package://bw_std_description/meshes/v3/D_behind_Link.STL" />
       </geometry>
     </collision>
   </link>
@@ -239,7 +239,7 @@
         rpy="1.5708 -1.5708 0" />
       <geometry>
         <mesh
-          filename="package://standard/meshes/v3/C1_Link.STL" />
+          filename="package://bw_std_description/meshes/v3/C1_Link.STL" />
       </geometry>
       <material
         name="">
@@ -253,7 +253,7 @@
         rpy="1.5708 -1.5708 0" />
       <geometry>
         <mesh
-          filename="package://standard/meshes/v3/C1_Link.STL" />
+          filename="package://bw_std_description/meshes/v3/C1_Link.STL" />
       </geometry>
     </collision>
   </link>
@@ -297,7 +297,7 @@
         rpy="1.5708 -1.5708 0" />
       <geometry>
         <mesh
-          filename="package://standard/meshes/v3/A_Degree1_Link.STL" />
+          filename="package://bw_std_description/meshes/v3/A_Degree1_Link.STL" />
       </geometry>
       <material
         name="">
@@ -311,7 +311,7 @@
         rpy="1.5708 -1.5708 0" />
       <geometry>
         <mesh
-          filename="package://standard/meshes/v3/A_Degree1_Link.STL" />
+          filename="package://bw_std_description/meshes/v3/A_Degree1_Link.STL" />
       </geometry>
     </collision>
   </link>
@@ -355,7 +355,7 @@
         rpy="-3.673218592E-06 3.05E-13 0.022641673205103" />
       <geometry>
         <mesh
-          filename="package://standard/meshes/v3/A_Degree2_Link.STL" />
+          filename="package://bw_std_description/meshes/v3/A_Degree2_Link.STL" />
       </geometry>
       <material
         name="">
@@ -369,7 +369,7 @@
         rpy="-3.673218592E-06 3.05E-13 0.022641673205103" />
       <geometry>
         <mesh
-          filename="package://standard/meshes/v3/A_Degree2_Link.STL" />
+          filename="package://bw_std_description/meshes/v3/A_Degree2_Link.STL" />
       </geometry>
     </collision>
   </link>
@@ -413,7 +413,7 @@
         rpy="-2.341585307166403 -3.673218592E-06 -1.548158326794897" />
       <geometry>
         <mesh
-          filename="package://standard/meshes/v3/A_Degree3_Link.STL" />
+          filename="package://bw_std_description/meshes/v3/A_Degree3_Link.STL" />
       </geometry>
       <material
         name="">
@@ -427,7 +427,7 @@
         rpy="-2.341585307166403 -3.673218592E-06 -1.548158326794897" />
       <geometry>
         <mesh
-          filename="package://standard/meshes/v3/A_Degree3_Link.STL" />
+          filename="package://bw_std_description/meshes/v3/A_Degree3_Link.STL" />
       </geometry>
     </collision>
   </link>
