@@ -9,7 +9,7 @@ install(
 )
 
 install(
-  FILES README.md
+  FILES README.md LICENSE
   DESTINATION share/${PROJECT_NAME}
 )
 

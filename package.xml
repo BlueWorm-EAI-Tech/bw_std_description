@@ -6,7 +6,7 @@
   <description>URDF description and RViz display launch files for the Standard robot.</description>
 
   <maintainer email="menlinyan@gmail.com">menlin</maintainer>
-  <license>BSD-3-Clause</license>
+  <license>MIT</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 

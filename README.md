@@ -201,3 +201,7 @@ source install/setup.bash
 生成脚本以 `urdf/std_auto.urdf` 为源模型，需要 NumPy 环境。生成后确认所有模型仍使用 `package://bw_std_description/` 资源 URI。
 
 修改 mesh 后建议先完全关闭已运行的 RViz2，再重新启动，避免继续显示缓存中的旧模型。
+
+## 开源协议
+
+本项目使用 MIT License，条款见仓库根目录 `LICENSE`。
